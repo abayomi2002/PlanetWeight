@@ -13,7 +13,7 @@ namespace PlanetWeights.Pages
         public IActionResult OnPost()
         {
             // extra validation (probably not that useful, but might be were additional validation can be added)
-            if (planetWeight.weight == 0.0)
+            if (planetWeight.weight <= 0.0)
             {
                 ModelState.AddModelError("", "You need to enter your weight");
             }

@@ -27,7 +27,7 @@ steps:
     ProjectKey: 'farmerofb_PlanetWeight'
     ProjectName: 'PlanetWeight'
     extraProperties: |
-      sonar.exclusions=**/obj/**,**/*.dll,**/*.csproj,**/*.sln,**/*.cshtml
+      sonar.exclusions=**/obj/**,**/*.dll,**/*.csproj,**/*.sln,**/*.cshtml,**/Error.cshtml.cs,**/Program.cs,**/Startup.cs
       sonar.cs.opencover.reportsPaths=$(Build.SourcesDirectory)/coverage.opencover.xml
 
 - task: DotNetCoreCLI@2

@@ -18,10 +18,12 @@ steps:
 
 
 - task: DotNetCoreCLI@2
+  displayName: 'Build Solution'
   inputs:
     command: 'build'
 
 - task: DotNetCoreCLI@2
+  displayName: 'Run unit/bdd tests'
   inputs:
     command: 'test'
 - task: PublishTestResults@2

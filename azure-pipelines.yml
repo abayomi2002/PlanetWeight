@@ -46,14 +46,15 @@ steps:
 
 
 - task: SonarCloudAnalyze@2
-  displayName: 'Publish sonar result to Sonar Cloud'
+  displayName: 'Run sonar analysis'
 
 - task: SonarCloudPublish@2
+  displayName: 'Publish sonar result to Sonar Cloud'
   inputs:
     pollingTimeoutSec: '300'
 
 - task: DotNetCoreCLI@2
-  displayName: 'Publish Build Artifacts'
+  displayName: 'Publish Build Artifacts 1'
   inputs:
     command: 'publish'
     publishWebProjects: true
@@ -61,6 +62,7 @@ steps:
     zipAfterPublish: true
 
 - task: PublishBuildArtifacts@1
+  displayName: 'Publish Build Artifacts 2'
   inputs:
     pathToPublish: '$(build.artifactStagingDirectory)'
     artifactName: 'drop'

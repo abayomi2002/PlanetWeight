@@ -26,10 +26,12 @@ steps:
   displayName: 'Run unit/bdd tests'
   inputs:
     command: 'test'
+    arguments: '--logger "trx;LogFileName=test_results.trx" --results-directory $(System.DefaultWorkingDirectory)/TestResults'
+
 - task: PublishTestResults@2
   inputs:
     testResultsFiles: '**/*.trx'
-    searchFolder: '$(System.DefaultWorkingDirectory)'
+    searchFolder: '$(System.DefaultWorkingDirectory)/TestResults'
     testRunTitle: 'Unit and BDD Tests'
 
 - task: DotNetCoreCLI@2
@@ -43,11 +45,13 @@ steps:
   inputs:
     SonarCloud: 'Sonar'
     organization: 'farmerofb'
-    scannerMode: 'CLI'
+    scannerMode: CLI
     cliVersion: '6.1.0.4477'
     configMode: 'file'
     projectKey: 'farmerofb_PlanetWeight'
     projectName: 'PlanetWeight'
+    cliProjectKey: 'farmerofb_PlanetWeight'
+  
 
 - task: SonarCloudAnalyze@2
   inputs:

@@ -2,7 +2,7 @@
 using PlanetWeights;
 
 [Binding]
-public class _PlanetWeightSteps
+public class _PlanetWeightStepsTests
 {
     private PlanetWeight _planetWeight;
     private string _errorMessage;

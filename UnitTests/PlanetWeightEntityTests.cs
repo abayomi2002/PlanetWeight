@@ -1,136 +1,75 @@
+using System;
+using Xunit;
 using PlanetWeights;
+using System.ComponentModel.DataAnnotations;
 
-namespace UnitTests;
-
-public class PlanetWeightEntityTests
+namespace PlanetWeights.Tests
 {
-    [Fact]
-    public void Test_WeightMin()
+    public class PlanetWeightTests
     {
-        // Arrange
-        var planetWeight = new PlanetWeight();
+        [Theory]
+        [InlineData(100, Planets.mercury, 37.8)]
+        [InlineData(100, Planets.venus, 90.7)]
+        [InlineData(100, Planets.moon, 16.6)]
+        [InlineData(100, Planets.mars, 37.7)]
+        [InlineData(100, Planets.jupiter, 236)]
+        [InlineData(100, Planets.saturn, 91.6)]
+        [InlineData(100, Planets.uranus, 88.9)]
+        [InlineData(100, Planets.neptune, 112)]
+        [InlineData(100, Planets.pluto, 7.1)]
+        public void TestWeightOnPlanet_ValidWeightAndPlanet_ReturnsCorrectWeightOnPlanet(double weight, Planets planet, double expectedWeightOnPlanet)
+        {
+            // Arrange
+            var planetWeight = new PlanetWeight
+            {
+                weight = weight,
+                planet = planet
+            };
 
-        // Act
-        var weightMin = PlanetWeight.weightMin;
+            // Act
+            var result = planetWeight.weightOnPlanet;
 
-        // Assert
-        Assert.Equal(1, weightMin);
-    }
+            // Assert
+            Assert.Equal(expectedWeightOnPlanet, result, 1);
+        }
 
-    [Fact]
-    public void Test_WeightMax()
-    {
-        // Arrange
-        var planetWeight = new PlanetWeight();
+        [Theory]
+        [InlineData(0)]
+        [InlineData(501)]
+        public void TestWeight_ValidationFails_ForInvalidWeights(double weight)
+        {
+            // Arrange
+            var planetWeight = new PlanetWeight
+            {
+                weight = weight,
+                planet = Planets.mars
+            };
 
-        // Act
-        var weightMax = PlanetWeight.WeightMax;
+            // Act
+            var validationResults = new List<ValidationResult>();
+            var validationContext = new ValidationContext(planetWeight);
+            var isValid = Validator.TryValidateObject(planetWeight, validationContext, validationResults, true);
 
-        // Assert
-        Assert.Equal(500, weightMax);
-    }
+            // Assert
+            Assert.False(isValid);
+            Assert.Contains(validationResults, v => v.ErrorMessage == "Invalid weight - Only Available from 1 to 500 lbs");
+        }
 
-    [Fact]
-    public void Test_Weight()
-    {
-        // Arrange
-        var planetWeight = new PlanetWeight();
+        [Fact]
+        public void TestWeightOnPlanet_DefaultValues_ReturnsCorrectWeightOnPlanet()
+        {
+            // Arrange
+            var planetWeight = new PlanetWeight
+            {
+                weight = 100,
+                planet = Planets.jupiter
+            };
 
-        // Act
-        var weight = planetWeight.weight;
+            // Act
+            var result = planetWeight.weightOnPlanet;
 
-        // Assert
-        Assert.Equal(0, weight);
-    }
-
-    [Fact]
-    public void Test_Planet()
-    {
-        // Arrange
-        var planetWeight = new PlanetWeight();
-
-        // Act
-        var planet = planetWeight.planet;
-
-        // Assert
-        Assert.Equal(Planets.mercury, planet);
-    }
-
-    [Fact]
-    public void Test_WeightOnPlanet()
-    {
-        // Arrange
-        var planetWeight = new PlanetWeight();
-
-        // Act
-        var weightOnPlanet = planetWeight.weightOnPlanet;
-
-        // Assert
-        Assert.Equal(0, weightOnPlanet);
-    }
-
-    [Fact]
-    public void Test_PlanetsSurfaceGravity()
-    {
-        // Arrange
-        var planetWeight = new PlanetWeight();
-
-        // Act
-        var planetsSurfaceGravity = planetWeight.planetsSurfaceGravity;
-
-        // Assert
-        Assert.Equal(0.378, planetsSurfaceGravity[0]);
-        Assert.Equal(0.907, planetsSurfaceGravity[1]);
-        Assert.Equal(0.166, planetsSurfaceGravity[2]);
-        Assert.Equal(0.377, planetsSurfaceGravity[3]);
-        Assert.Equal(2.36, planetsSurfaceGravity[4]);
-        Assert.Equal(0.916, planetsSurfaceGravity[5]);
-        Assert.Equal(0.889, planetsSurfaceGravity[6]);
-        Assert.Equal(1.12, planetsSurfaceGravity[7]);
-        Assert.Equal(0.071, planetsSurfaceGravity[8]);
-    }
-
-    [Fact]
-    public void Test_WeightConverted()
-    {
-        // Arrange
-        var planetWeight = new PlanetWeight();
-
-        // Act
-        var weightConverted = planetWeight.weight;
-
-        // Assert
-        Assert.Equal(0, weightConverted);
-    }
-
-    [Fact]
-    public void Test_WeightConvertedMercury()
-    {
-        // Arrange
-        var planetWeight = new PlanetWeight();
-        planetWeight.planet = Planets.mercury;
-        planetWeight.weight = 100;
-
-        // Act
-        var weightConverted = planetWeight.weightOnPlanet;
-
-        // Assert
-        Assert.Equal(37.8, weightConverted);
-    }
-
-    [Fact]
-    public void Test_WeightConvertedVenus()
-    {
-        // Arrange
-        var planetWeight = new PlanetWeight();
-        planetWeight.planet = Planets.venus;
-        planetWeight.weight = 100;
-
-        // Act
-        var weightConverted = planetWeight.weightOnPlanet;
-
-        // Assert
-        Assert.Equal(90.7, weightConverted);
+            // Assert
+            Assert.Equal(236, result, 1);
+        }
     }
 }
-

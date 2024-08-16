@@ -43,6 +43,7 @@ steps:
   inputs:
     SonarCloud: 'Sonar'
     organization: 'farmerofb'
+    projectKey: 'farmerofb_PlanetWeight'
     scannerMode: 'CLI'
     cliVersion: '6.1.0.4477'
     configMode: 'file'

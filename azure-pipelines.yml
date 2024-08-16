@@ -6,6 +6,8 @@
 trigger:
 - main
 
+pool:
+  name: 'my pool'
 
 variables:
   solution: '**/*.sln'

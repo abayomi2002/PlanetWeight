@@ -28,7 +28,7 @@ steps:
     ProjectName: 'PlanetWeight'
     extraProperties: |
       sonar.exclusions=**/obj/**,**/*.dll,**/*.csproj,**/*.sln,**/*.cshtml
-      sonar.cs.opencover.reportsPaths=$(Build.SourcesDirectory)/PersistedTestResults/coverage.opencover.xml
+      sonar.cs.opencover.reportsPaths=$(Build.SourcesDirectory)/coverage.opencover.xml
 
 - task: DotNetCoreCLI@2
   displayName: 'Build Solution'
@@ -42,12 +42,7 @@ steps:
   inputs:
     command: 'test'
     projects: '$(solution)'
-    arguments: '--configuration $(buildConfiguration) --collect:"XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover --results-directory $(Build.SourcesDirectory)/TestResults'
-
-- script: |
-    mkdir -p $(Build.SourcesDirectory)/PersistedTestResults
-    cp $(Build.SourcesDirectory)/TestResults/coverage.opencover.xml $(Build.SourcesDirectory)/PersistedTestResults/
-  displayName: 'Copy Coverage File to Persistent Directory'
+    arguments: '--configuration $(buildConfiguration) --collect:"XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover'
 
 - task: SonarCloudAnalyze@2
   displayName: 'Run sonar analysis'

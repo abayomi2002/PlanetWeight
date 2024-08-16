@@ -22,12 +22,10 @@ steps:
   inputs:
     SonarCloud: 'Sonar'
     organization: 'farmerofb'
-    scannerMode: CLI
-    cliVersion: '6.1.0.4477'
-    configMode: 'file'
-    cliProjectKey: 'farmerofb_PlanetWeight'
-    cliProjectName: 'PlanetWeight'
-    configFile: 'sonar-project.properties'
+    scannerMode: MSBuild
+    ProjectKey: 'farmerofb_PlanetWeight'
+    ProjectName: 'PlanetWeight'
+    extraProperties: sonar.exclusions=**/obj/**,**/*.dll,**/*.csproj,**/*.sln,**/*.cshtml
 
 - task: DotNetCoreCLI@2
   displayName: 'Build Solution'

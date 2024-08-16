@@ -53,6 +53,10 @@ steps:
   inputs:
     pollingTimeoutSec: '300'
 
+- script: |
+    ls -la $(Build.SourcesDirectory)/TestResults
+  displayName: 'List TestResults Directory'
+  
 - task: DotNetCoreCLI@2
   displayName: 'Publish Build Artifacts 1'
   inputs:

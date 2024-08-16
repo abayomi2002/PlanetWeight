@@ -44,6 +44,18 @@ steps:
     projects: '$(solution)'
     arguments: '--configuration $(buildConfiguration) --collect:"XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover'
 
+- script: |
+    mkdir -p $(Build.SourcesDirectory)
+    coverage_file=$(find /home/azureuser/myagent/_work/_temp/ -name "*.opencover.xml" | head -n 1)
+    if [ -f "$coverage_file" ]; then
+        cp "$coverage_file" $(Build.SourcesDirectory)/coverage.opencover.xml
+    else
+        echo "Coverage file not found"
+        exit 1
+    fi
+  displayName: 'Locate and Copy Coverage File to SonarCloud Directory'
+
+
 - task: SonarCloudAnalyze@2
   displayName: 'Run sonar analysis'
 

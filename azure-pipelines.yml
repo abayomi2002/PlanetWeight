@@ -15,24 +15,15 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
-- task: NuGetToolInstaller@1
 
-- task: NuGetCommand@2
+
+- task: DotNetCoreCLI@2
   inputs:
-    restoreSolution: '$(solution)'
+    command: 'build'
 
-- task: VSBuild@1
+- task: DotNetCoreCLI@2
   inputs:
-    solution: '$(solution)'
-    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)"'
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
-
-- task: VSTest@2
-  inputs:
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
-
+    command: 'test'
 - task: PublishTestResults@2
   inputs:
     testResultsFiles: '**/*.trx'
@@ -45,3 +36,34 @@ steps:
     command: 'build'
     projects: '**/*.csproj'
     arguments: '--configuration $(buildConfiguration) /p:UseRoslynAnalyzers=true /p:RunCodeAnalysis=true'
+
+- task: SonarCloudPrepare@2
+  inputs:
+    SonarCloud: 'Sonar'
+    organization: 'farmerofb'
+    scannerMode: 'CLI'
+    cliVersion: '6.1.0.4477'
+    configMode: 'file'
+
+- task: SonarCloudAnalyze@2
+  inputs:
+    jdkversion: 'JAVA_HOME_17_X64'
+
+- task: SonarCloudPublish@2
+  inputs:
+    pollingTimeoutSec: '300'
+
+
+- task: DotNetCoreCLI@2
+  displayName: 'Publish Build Artifacts'
+  inputs:
+    command: 'publish'
+    publishWebProjects: true
+    arguments: '--configuration $(buildConfiguration) --output $(build.artifactStagingDirectory)'
+    zipAfterPublish: true
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    pathToPublish: '$(build.artifactStagingDirectory)'
+    artifactName: 'drop'
+    publishLocation: 'Container'

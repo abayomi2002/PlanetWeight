@@ -11,6 +11,13 @@ variables:
 
 steps:
 
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'restore'
+    projects: 'my-project.sln'
+    feedsToUse: 'select'
+
+
 - task: SonarCloudPrepare@2
   inputs:
     SonarCloud: 'Sonar'
@@ -36,7 +43,8 @@ steps:
   inputs:
     command: 'test'
     projects: '$(solution)'
-    arguments: '--configuration $(BuildConfiguration) /p:CollectCoverage=true /p:CoverletOutputFormat=opencover --logger trx'
+    arguments: '--collect "Code Coverage"'
+
 
 - task: SonarCloudAnalyze@2
 

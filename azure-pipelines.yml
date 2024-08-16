@@ -45,6 +45,7 @@ steps:
     projectName: 'PlanetWeight'
     cliProjectKey: 'farmerofb_PlanetWeight'
     cliProjectName: 'PlanetWeight'
+    configFile: 'sonar-project.properties'
 
   
 - task: SonarCloudAnalyze@2

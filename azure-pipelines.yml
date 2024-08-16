@@ -26,13 +26,6 @@ steps:
   displayName: 'Run unit/bdd tests'
   inputs:
     command: 'test'
-    arguments: --logger "trx;LogFileName=test_results.trx" --results-directory $(System.DefaultWorkingDirectory)/TestResults
-
-- task: PublishTestResults@2
-  inputs:
-    testResultsFiles: '**/*.trx'
-    searchFolder: '$(System.DefaultWorkingDirectory)/TestResults'
-    testRunTitle: 'Unit and BDD Tests'
 
 - task: DotNetCoreCLI@2
   displayName: 'Run Code Analysis'

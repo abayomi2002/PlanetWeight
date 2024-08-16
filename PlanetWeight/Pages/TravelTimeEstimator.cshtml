@@ -1,0 +1,31 @@
+﻿@page
+@using global::PlanetWeights.Pages
+@model TravelTimeEstimatorModel
+@{
+    ViewData["Title"] = "Planetary Travel Time Estimator";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<form method="post">
+    <div class="form-group">
+        <label for="planet">Select a Planet:</label>
+        <select id="planet" asp-for="SelectedPlanet" asp-items="@(new SelectList(Model.Planets))" class="form-control">
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="speed">Enter Speed (km/h):</label>
+        <input type="number" id="speed" asp-for="Speed" class="form-control" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Calculate Travel Time</button>
+</form>
+
+@if (Model.TravelTime != null)
+{
+    <div class="mt-4">
+        <h3>Estimated Travel Time:</h3>
+        <p>@Model.TravelTime</p>
+    </div>
+}

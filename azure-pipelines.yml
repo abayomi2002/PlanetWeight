@@ -32,3 +32,44 @@ steps:
   inputs:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
+
+- task: PublishTestResults@2
+  inputs:
+    testResultsFiles: '**/*.trx'
+    searchFolder: '$(System.DefaultWorkingDirectory)'
+    testRunTitle: 'Unit and BDD Tests'
+
+- task: DotNetCoreCLI@2
+  displayName: 'Run Code Analysis'
+  inputs:
+    command: 'build'
+    projects: '**/*.csproj'
+    arguments: '--configuration $(buildConfiguration) /p:UseRoslynAnalyzers=true /p:RunCodeAnalysis=true'
+
+- task: SonarCloudPrepare@1
+  inputs:
+    SonarCloud: '<your-sonar-cloud-service-connection>'
+    organization: '<your-organization>'
+    scannerMode: 'MSBuild'
+    projectKey: '<your-project-key>'
+    projectName: '<your-project-name>'
+
+- task: SonarCloudAnalyze@1
+
+- task: SonarCloudPublish@1
+  inputs:
+    pollingTimeoutSec: '300'
+
+- task: DotNetCoreCLI@2
+  displayName: 'Publish Build Artifacts'
+  inputs:
+    command: 'publish'
+    publishWebProjects: true
+    arguments: '--configuration $(buildConfiguration) --output $(build.artifactStagingDirectory)'
+    zipAfterPublish: true
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    pathToPublish: '$(build.artifactStagingDirectory)'
+    artifactName: 'drop'
+    publishLocation: 'Container'

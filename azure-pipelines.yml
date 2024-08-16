@@ -12,6 +12,7 @@ variables:
 steps:
 
 - task: DotNetCoreCLI@2
+  displayName: 'Restore projects'
   inputs:
     command: 'restore'
     projects: '$(solution)'
@@ -25,7 +26,9 @@ steps:
     scannerMode: MSBuild
     ProjectKey: 'farmerofb_PlanetWeight'
     ProjectName: 'PlanetWeight'
-    extraProperties: sonar.exclusions=**/obj/**,**/*.dll,**/*.csproj,**/*.sln,**/*.cshtml
+    extraProperties: |
+      sonar.exclusions=**/obj/**,**/*.dll,**/*.csproj,**/*.sln,**/*.cshtml
+      sonar.cs.opencover.reportsPaths=$(Build.SourcesDirectory)/TestResults/coverage.opencover.xml
 
 - task: DotNetCoreCLI@2
   displayName: 'Build Solution'
@@ -39,10 +42,11 @@ steps:
   inputs:
     command: 'test'
     projects: '$(solution)'
-    arguments: '--collect "Code Coverage"'
+    arguments: '--configuration $(buildConfiguration) --collect:"XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover --results-directory $(Build.SourcesDirectory)/TestResults'
 
 
 - task: SonarCloudAnalyze@2
+  displayName: 'Publish sonar result to Sonar Cloud'
 
 - task: SonarCloudPublish@2
   inputs:

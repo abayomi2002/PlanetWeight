@@ -22,7 +22,7 @@ namespace PlanetWeights
     //Class to present to the Internet
     public class PlanetWeight
     {
-        public List<double> planetsSurfaceGravity = new List<double> { 0.378, 0.907, 0.166, 0.377, 2.36, 0.916, 0.889, 1.12, 0.071 };
+        private readonly List<double> planetsSurfaceGravity = new List<double> { 0.378, 0.907, 0.166, 0.377, 2.36, 0.916, 0.889, 1.12, 0.071 };
 
         public const int weightMin = 1;
         public const int WeightMax = 500;

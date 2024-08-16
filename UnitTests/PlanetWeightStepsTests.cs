@@ -1,11 +1,11 @@
 ﻿using TechTalk.SpecFlow;
 using PlanetWeights;
-
+namespace UnitTests;
 [Binding]
-public class _PlanetWeightStepsTests
+public class PlanetWeightStepsTests
 {
-    private PlanetWeight _planetWeight;
-    private string _errorMessage;
+    private PlanetWeight _planetWeight = null!;
+    private string _errorMessage = string.Empty;
 
     [Given(@"a user enters a weight of (.*) lbs")]
     public void GivenAUserEntersAWeightOfLbs(double weight)
@@ -24,7 +24,7 @@ public class _PlanetWeightStepsTests
     public void WhenTheWeightOnPlanetIsCalculated(string planetName)
     {
         // The weight calculation happens automatically in the getter of weightOnPlanet
-        var calculatedWeight = _planetWeight.weightOnPlanet;
+        _ = _planetWeight.weightOnPlanet;
     }
 
     [Then(@"the calculated weight should be (.*) lbs")]

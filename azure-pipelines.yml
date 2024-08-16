@@ -48,11 +48,11 @@ steps:
 
 - task: SonarCloudPrepare@1
   inputs:
-    SonarCloud: '<your-sonar-cloud-service-connection>'
-    organization: '<your-organization>'
+    SonarCloud: 'Sonar'
+    organization: 'farmerofb'
     scannerMode: 'MSBuild'
-    projectKey: '<your-project-key>'
-    projectName: '<your-project-name>'
+    projectKey: 'farmerofb_PlanetWeight'
+    projectName: 'PlanetWeight'
 
 - task: SonarCloudAnalyze@1
 
